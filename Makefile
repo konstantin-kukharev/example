@@ -1,35 +1,16 @@
-# See README.txt.
+all: comment
 
-.PHONY: all clean
+comment: comment-gen tidy comment-run
 
-all: go gotest
+comment-gen:
+	rm -rf ./gen && mkdir ./gen && \
+	swagger generate server -t ./gen -f ./swagger/comment.json --exclude-main -A comment -q
 
-go:     add_person_go     list_people_go
-gotest: add_person_gotest list_people_gotest
+comment-run:
+	@go run ./cmd/comment-example-server/main.go
 
-clean:
-	rm -f go/tutorialpb/*.pb.go add_person_go list_people_go
-	rmdir tutorial 2>/dev/null || true
-	rmdir com/example/tutorial 2>/dev/null || true
-	rmdir com/example 2>/dev/null || true
-	rmdir com 2>/dev/null || true
+tidy:
+	@go mod tidy
 
-protoc_middleman: addressbook.proto
-	protoc $$PROTO_PATH --cpp_out=. --java_out=. --python_out=. addressbook.proto
-	@touch protoc_middleman
-
-go/tutorialpb/addressbook.pb.go: addressbook.proto
-	mkdir -p go/tutorialpb # make directory for go package
-	protoc $$PROTO_PATH --go_opt=paths=source_relative --go_out=go/tutorialpb addressbook.proto
-
-add_person_go: go/cmd/add_person/add_person.go go/tutorialpb/addressbook.pb.go
-	cd go && go build -o ../add_person_go ./cmd/add_person
-
-add_person_gotest: go/tutorialpb/addressbook.pb.go
-	cd go && go test ./cmd/add_person
-
-list_people_go: go/cmd/list_people/list_people.go go/tutorialpb/addressbook.pb.go
-	cd go && go build -o ../list_people_go ./cmd/list_people
-
-list_people_gotest: go/tutorialpb/addressbook.pb.go
-	cd go && go test ./cmd/list_people
+ui:
+	swagger serve ./swagger/comment.json -p=8080 -F swagger

@@ -4,49 +4,33 @@ package restapi
 
 import (
 	"crypto/tls"
+	"log"
 	"net/http"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 
 	"esb/gen/restapi/operations"
+	"esb/gen/restapi/operations/product"
+	productHandler "esb/internal/handler/product"
 )
 
-//go:generate swagger generate server --target ../../gen --name Comment --spec ../../swagger/comment.json --principal interface{} --exclude-main
+//go:generate swagger generate server --target ../../gen --name ProductComment --spec ../../swagger/product/comment.yml --template-dir ./gen/template --principal interface{} --exclude-main
 
-func configureFlags(api *operations.CommentAPI) {
+func configureFlags(api *operations.ProductCommentAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.CommentAPI) http.Handler {
-	// configure the api here
+func configureAPI(api *operations.ProductCommentAPI) http.Handler {
 	api.ServeError = errors.ServeError
-
-	// Set your custom logger if needed. Default one is log.Printf
-	// Expected interface func(string, ...interface{})
-	//
-	// Example:
-	// api.Logger = log.Printf
-
+	api.Logger = log.Printf
 	api.UseSwaggerUI()
-	// To continue using redoc as your UI, uncomment the following line
-	// api.UseRedoc()
 
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.AddCommentHandler == nil {
-		api.AddCommentHandler = operations.AddCommentHandlerFunc(func(params operations.AddCommentParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.AddComment has not yet been implemented")
-		})
-	}
-	if api.FindCommentHandler == nil {
-		api.FindCommentHandler = operations.FindCommentHandlerFunc(func(params operations.FindCommentParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.FindComment has not yet been implemented")
-		})
-	}
+	api.ProductProductCommentAddHandler = product.ProductCommentAddHandlerFunc(productHandler.CommentAdd)
 
 	api.PreServerShutdown = func() {}
 

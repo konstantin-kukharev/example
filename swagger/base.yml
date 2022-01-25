@@ -1,0 +1,17 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: api
+  description: api
+  contact:
+    name: kkukharev
+  license:
+    name: ISA
+host: localhost
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json

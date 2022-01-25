@@ -1,16 +1,24 @@
 all: comment
 
-comment: comment-gen tidy comment-run
+comment: comment-run
 
 comment-gen:
-	rm -rf ./gen && mkdir ./gen && \
-	swagger generate server -t ./gen -f ./swagger/comment.json --exclude-main -A comment -q
+	swagger generate server -t ./gen -f ./swagger/product/comment.yml --exclude-main -A productComment --template-dir ./gen/template
 
 comment-run:
-	@go run ./cmd/comment-example-server/main.go
-
-tidy:
 	@go mod tidy
+	@go run ./cmd/comment/main.go
 
-ui:
-	swagger serve ./swagger/comment.json -p=8080 -F swagger
+gen-spec:
+	swagger mixin \
+		swagger/base.yml \
+		swagger/product/comment.yml \
+		-o ./swagger/schema.json
+
+gen-doc:
+	swagger generate markdown -f swagger/schema.json
+
+start-ui:
+	swagger serve ./swagger/schema.json -p=8080 -F swagger
+
+ui: gen-spec gen-doc start-ui

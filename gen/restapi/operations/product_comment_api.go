@@ -18,11 +18,13 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"esb/gen/restapi/operations/product"
 )
 
-// NewCommentAPI creates a new Comment instance
-func NewCommentAPI(spec *loads.Document) *CommentAPI {
-	return &CommentAPI{
+// NewProductCommentAPI creates a new ProductComment instance
+func NewProductCommentAPI(spec *loads.Document) *ProductCommentAPI {
+	return &ProductCommentAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -42,17 +44,14 @@ func NewCommentAPI(spec *loads.Document) *CommentAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		AddCommentHandler: AddCommentHandlerFunc(func(params AddCommentParams) middleware.Responder {
-			return middleware.NotImplemented("operation AddComment has not yet been implemented")
-		}),
-		FindCommentHandler: FindCommentHandlerFunc(func(params FindCommentParams) middleware.Responder {
-			return middleware.NotImplemented("operation FindComment has not yet been implemented")
+		ProductProductCommentAddHandler: product.ProductCommentAddHandlerFunc(func(params product.ProductCommentAddParams) middleware.Responder {
+			return middleware.NotImplemented("operation product.ProductCommentAdd has not yet been implemented")
 		}),
 	}
 }
 
-/*CommentAPI sample */
-type CommentAPI struct {
+/*ProductCommentAPI the product comment API */
+type ProductCommentAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -84,10 +83,8 @@ type CommentAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
-	// AddCommentHandler sets the operation handler for the add comment operation
-	AddCommentHandler AddCommentHandler
-	// FindCommentHandler sets the operation handler for the find comment operation
-	FindCommentHandler FindCommentHandler
+	// ProductProductCommentAddHandler sets the operation handler for the product comment add operation
+	ProductProductCommentAddHandler product.ProductCommentAddHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -109,52 +106,52 @@ type CommentAPI struct {
 }
 
 // UseRedoc for documentation at /docs
-func (o *CommentAPI) UseRedoc() {
+func (o *ProductCommentAPI) UseRedoc() {
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
-func (o *CommentAPI) UseSwaggerUI() {
+func (o *ProductCommentAPI) UseSwaggerUI() {
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *CommentAPI) SetDefaultProduces(mediaType string) {
+func (o *ProductCommentAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *CommentAPI) SetDefaultConsumes(mediaType string) {
+func (o *ProductCommentAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *CommentAPI) SetSpec(spec *loads.Document) {
+func (o *ProductCommentAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *CommentAPI) DefaultProduces() string {
+func (o *ProductCommentAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *CommentAPI) DefaultConsumes() string {
+func (o *ProductCommentAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *CommentAPI) Formats() strfmt.Registry {
+func (o *ProductCommentAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *CommentAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *ProductCommentAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the CommentAPI
-func (o *CommentAPI) Validate() error {
+// Validate validates the registrations in the ProductCommentAPI
+func (o *ProductCommentAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -165,11 +162,8 @@ func (o *CommentAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.AddCommentHandler == nil {
-		unregistered = append(unregistered, "AddCommentHandler")
-	}
-	if o.FindCommentHandler == nil {
-		unregistered = append(unregistered, "FindCommentHandler")
+	if o.ProductProductCommentAddHandler == nil {
+		unregistered = append(unregistered, "product.ProductCommentAddHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -180,23 +174,23 @@ func (o *CommentAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *CommentAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *ProductCommentAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *CommentAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *ProductCommentAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	return nil
 }
 
 // Authorizer returns the registered authorizer
-func (o *CommentAPI) Authorizer() runtime.Authorizer {
+func (o *ProductCommentAPI) Authorizer() runtime.Authorizer {
 	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *CommentAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *ProductCommentAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -213,7 +207,7 @@ func (o *CommentAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consum
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *CommentAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *ProductCommentAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -229,7 +223,7 @@ func (o *CommentAPI) ProducersFor(mediaTypes []string) map[string]runtime.Produc
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *CommentAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *ProductCommentAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -244,8 +238,8 @@ func (o *CommentAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-// Context returns the middleware context for the comment API
-func (o *CommentAPI) Context() *middleware.Context {
+// Context returns the middleware context for the product comment API
+func (o *ProductCommentAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -253,7 +247,7 @@ func (o *CommentAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *CommentAPI) initHandlerCache() {
+func (o *ProductCommentAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -262,16 +256,12 @@ func (o *CommentAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/comment"] = NewAddComment(o.context, o.AddCommentHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/comment"] = NewFindComment(o.context, o.FindCommentHandler)
+	o.handlers["POST"]["/product/comment"] = product.NewProductCommentAdd(o.context, o.ProductProductCommentAddHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *CommentAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *ProductCommentAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -284,24 +274,24 @@ func (o *CommentAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *CommentAPI) Init() {
+func (o *ProductCommentAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *CommentAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *ProductCommentAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *CommentAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *ProductCommentAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *CommentAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *ProductCommentAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""

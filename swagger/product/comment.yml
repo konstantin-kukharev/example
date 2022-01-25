@@ -1,0 +1,99 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  contact:
+    name: kkukharev
+  title: Комментарии к товарам
+  license:
+    name: ISA
+host: localhost
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /product/comment:
+    post:
+      tags:
+        - product
+      description: Добавление нового комментария к товару
+      operationId: productCommentAdd
+      produces:
+        - application/json
+      parameters:
+        - name: comment
+          in: body
+          description: Комментарий для добавления
+          required: true
+          schema:
+            $ref: '#/definitions/ProductComment'
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/OkModel'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+definitions:
+  ProductComment:
+    title: Комментарий к товару
+    type: object
+    required:
+      - own_id
+      - product_sup_code
+      - region_id
+      - msg
+    properties:
+      own_id:
+        type: integer
+        format: int32
+      product_sup_code:
+        description: код товара
+        type: string
+      region_id:
+        description: ид региона
+        type: string
+        enum:
+          - "52"
+          - "77"
+      msg:
+        description: сообщение
+        type: string
+      review_to:
+        type: integer
+        format: int32
+      rating:
+        description: рейтинг
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 100
+      tags:
+        type: string
+      date:
+        description: дата и время комментария в формате "2022-01-12 14:33:24"
+        type: string
+      source:
+        description: > 
+          application source: `app` - mobile application, `site` - site backend
+        type: string
+        enum:
+          - app
+          - site
+  ErrorModel:
+    description: >
+      ошибка при выполнении запроса
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  OkModel:
+    type: object

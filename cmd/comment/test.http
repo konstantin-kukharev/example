@@ -1,0 +1,16 @@
+POST http://localhost:52954/api/product/comment
+Content-Type: application/json
+
+{
+  "product_sup_code": "1802223400000000",
+  "region_id": "52",
+  "review_to": 0,
+  "own_id": 3614089,
+  "msg": "Вино фантастическое, пью постоянно, не могу остановиться 😀😂🤣",
+  "rating": 5,
+  "tags": "",
+  "date": "2022-01-12 14:33:24",
+  "source": "app"
+}
+
+###

@@ -8,59 +8,25 @@ package models
 import (
 	"context"
 
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
-// ErrorModel error model
+// ErrorModel ошибка при выполнении запроса
+//
 //
 // swagger:model ErrorModel
 type ErrorModel struct {
 
 	// code
-	// Required: true
-	Code *int32 `json:"code"`
+	Code int32 `json:"code,omitempty"`
 
 	// message
-	// Required: true
-	Message *string `json:"message"`
+	Message string `json:"message,omitempty"`
 }
 
 // Validate validates this error model
 func (m *ErrorModel) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.validateCode(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateMessage(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *ErrorModel) validateCode(formats strfmt.Registry) error {
-
-	if err := validate.Required("code", "body", m.Code); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ErrorModel) validateMessage(formats strfmt.Registry) error {
-
-	if err := validate.Required("message", "body", m.Message); err != nil {
-		return err
-	}
-
 	return nil
 }
 

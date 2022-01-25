@@ -29,8 +29,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "sample",
-    "title": "comment example",
+    "title": "Комментарии к товарам",
     "contact": {
       "name": "kkukharev"
     },
@@ -42,62 +41,32 @@ func init() {
   "host": "localhost",
   "basePath": "/api",
   "paths": {
-    "/comment": {
-      "get": {
-        "description": "Returns all comments from the system that the user has access to",
-        "produces": [
-          "application/json"
-        ],
-        "operationId": "findComment",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int32",
-            "description": "maximum number of results to return",
-            "name": "limit",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "comment response",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/NewComment"
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
-            }
-          }
-        }
-      },
+    "/product/comment": {
       "post": {
-        "description": "Creates a new comment",
+        "description": "Добавление нового комментария к товару",
         "produces": [
           "application/json"
         ],
-        "operationId": "addComment",
+        "tags": [
+          "product"
+        ],
+        "operationId": "productCommentAdd",
         "parameters": [
           {
-            "description": "Comment to add to the store",
+            "description": "Комментарий для добавления",
             "name": "comment",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NewComment"
+              "$ref": "#/definitions/ProductComment"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Comment response",
+            "description": "OK response",
             "schema": {
-              "$ref": "#/definitions/NewComment"
+              "$ref": "#/definitions/OkModel"
             }
           },
           "default": {
@@ -111,20 +80,9 @@ func init() {
     }
   },
   "definitions": {
-    "Comment": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/NewComment"
-        }
-      ]
-    },
     "ErrorModel": {
+      "description": "ошибка при выполнении запроса\n",
       "type": "object",
-      "required": [
-        "code",
-        "message"
-      ],
       "properties": {
         "code": {
           "type": "integer",
@@ -135,16 +93,62 @@ func init() {
         }
       }
     },
-    "NewComment": {
+    "OkModel": {
+      "type": "object"
+    },
+    "ProductComment": {
       "type": "object",
+      "title": "Комментарий к товару",
       "required": [
-        "own_id"
+        "own_id",
+        "product_sup_code",
+        "region_id",
+        "msg"
       ],
       "properties": {
-        "message": {
+        "date": {
+          "description": "дата и время комментария в формате \"2022-01-12 14:33:24\"",
+          "type": "string"
+        },
+        "msg": {
+          "description": "сообщение",
           "type": "string"
         },
         "own_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "product_sup_code": {
+          "description": "код товара",
+          "type": "string"
+        },
+        "rating": {
+          "description": "рейтинг",
+          "type": "integer",
+          "format": "int32",
+          "maximum": 100
+        },
+        "region_id": {
+          "description": "ид региона",
+          "type": "string",
+          "enum": [
+            "52",
+            "77"
+          ]
+        },
+        "review_to": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "source": {
+          "description": "application source: ` + "`" + `app` + "`" + ` - mobile application, ` + "`" + `site` + "`" + ` - site backend\n",
+          "type": "string",
+          "enum": [
+            "app",
+            "site"
+          ]
+        },
+        "tags": {
           "type": "string"
         }
       }
@@ -163,8 +167,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "sample",
-    "title": "comment example",
+    "title": "Комментарии к товарам",
     "contact": {
       "name": "kkukharev"
     },
@@ -176,62 +179,32 @@ func init() {
   "host": "localhost",
   "basePath": "/api",
   "paths": {
-    "/comment": {
-      "get": {
-        "description": "Returns all comments from the system that the user has access to",
-        "produces": [
-          "application/json"
-        ],
-        "operationId": "findComment",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int32",
-            "description": "maximum number of results to return",
-            "name": "limit",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "comment response",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/NewComment"
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
-            }
-          }
-        }
-      },
+    "/product/comment": {
       "post": {
-        "description": "Creates a new comment",
+        "description": "Добавление нового комментария к товару",
         "produces": [
           "application/json"
         ],
-        "operationId": "addComment",
+        "tags": [
+          "product"
+        ],
+        "operationId": "productCommentAdd",
         "parameters": [
           {
-            "description": "Comment to add to the store",
+            "description": "Комментарий для добавления",
             "name": "comment",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NewComment"
+              "$ref": "#/definitions/ProductComment"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Comment response",
+            "description": "OK response",
             "schema": {
-              "$ref": "#/definitions/NewComment"
+              "$ref": "#/definitions/OkModel"
             }
           },
           "default": {
@@ -245,20 +218,9 @@ func init() {
     }
   },
   "definitions": {
-    "Comment": {
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/NewComment"
-        }
-      ]
-    },
     "ErrorModel": {
+      "description": "ошибка при выполнении запроса\n",
       "type": "object",
-      "required": [
-        "code",
-        "message"
-      ],
       "properties": {
         "code": {
           "type": "integer",
@@ -269,16 +231,63 @@ func init() {
         }
       }
     },
-    "NewComment": {
+    "OkModel": {
+      "type": "object"
+    },
+    "ProductComment": {
       "type": "object",
+      "title": "Комментарий к товару",
       "required": [
-        "own_id"
+        "own_id",
+        "product_sup_code",
+        "region_id",
+        "msg"
       ],
       "properties": {
-        "message": {
+        "date": {
+          "description": "дата и время комментария в формате \"2022-01-12 14:33:24\"",
+          "type": "string"
+        },
+        "msg": {
+          "description": "сообщение",
           "type": "string"
         },
         "own_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "product_sup_code": {
+          "description": "код товара",
+          "type": "string"
+        },
+        "rating": {
+          "description": "рейтинг",
+          "type": "integer",
+          "format": "int32",
+          "maximum": 100,
+          "minimum": 0
+        },
+        "region_id": {
+          "description": "ид региона",
+          "type": "string",
+          "enum": [
+            "52",
+            "77"
+          ]
+        },
+        "review_to": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "source": {
+          "description": "application source: ` + "`" + `app` + "`" + ` - mobile application, ` + "`" + `site` + "`" + ` - site backend\n",
+          "type": "string",
+          "enum": [
+            "app",
+            "site"
+          ]
+        },
+        "tags": {
           "type": "string"
         }
       }
